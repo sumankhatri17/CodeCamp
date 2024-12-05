@@ -1,6 +1,8 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const dotenv = require("dotenv");
+dotenv.config();
 
-const API_KEY = "AIzaSyAJaQ1PxinUvCGr5YL3uXVT3merq6GzEJA";
+const API_KEY = process.env.GEMINI_API_KEY;
 const question = "Explain the Process of Photosynthesis.";
 const answer =
   "Photosynthesis is the process by which green plants convert sunlight into chemical energy, producing oxygen as a byproduct";
