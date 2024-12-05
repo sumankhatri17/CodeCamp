@@ -4,8 +4,7 @@ dotenv.config();
 
 const API_KEY = process.env.GEMINI_API_KEY;
 const question = "Explain the Process of Photosynthesis.";
-const answer =
-  "Photosynthesis is the process by which green plants convert sunlight into chemical energy, producing oxygen as a byproduct";
+const answer = "Potato is Photoseenthisis";
 async function generateContent() {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });

@@ -5,6 +5,7 @@ import SignUpForm from "./components/signup.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Homepage from "./Pages/Homepage.jsx";
 import Footer from "./components/Footer.jsx";
+import Evaluation from "./Pages/Evaluation.jsx";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<SignUpForm />} />
+          <Route path="/evaluate" element={<Evaluation />} />
         </Routes>
       </div>
       <Footer />
