@@ -1,15 +1,12 @@
-const express = require('express');
+import express from 'express';
+import { router } from './app/router.js';
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(express.json());
-
-// Routes
-app.get('/', (req, res) => {
-  res.send('Welcome to the Express API');
-});
+app.use('/',router);
 
 // Start the server
 app.listen(PORT, () => {
