@@ -8,6 +8,8 @@ import Footer from "./components/Footer.jsx";
 import Evaluation from "./Pages/Evaluation.jsx";
 import ApplyForInstructor from "./components/ApplyForInstructor.jsx";
 import Landingpage from "./Pages/Landingpage.jsx";
+
+
 const App = () => {
   return (
     <Router>
