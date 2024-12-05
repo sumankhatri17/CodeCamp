@@ -1,12 +1,12 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
+import LoginForm from "./components/login.jsx";
 
 const App = () => {
   return (
-    <div>
-      <p className=" bg-green-600 text-white font-bold text-5xl">
-        How I wonder if You Know !!! TO Find Your Dreams Come trueee !!
-      </p>
-    </div>
+    <Routes>
+    <Route path="/login" element={<LoginForm/>} />
+  </Routes>
   );
 };
 
