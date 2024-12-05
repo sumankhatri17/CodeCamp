@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoginForm = async () => {
+const LoginForm = () => {
   return (<>
     <div className="form-container bg-gray-800 rounded-lg p-8">
       <p className="text-2xl font-bold text-white text-center mb-6">Login</p>
