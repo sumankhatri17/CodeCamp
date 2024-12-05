@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar.jsx";
 import Homepage from "./Pages/Homepage.jsx";
 import Footer from "./components/Footer.jsx";
 import Evaluation from "./Pages/Evaluation.jsx";
-
+import ApplyForInstructor from "./components/ApplyForInstructor.jsx";
 const App = () => {
   return (
     <Router>
@@ -17,6 +17,11 @@ const App = () => {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<SignUpForm />} />
           <Route path="/evaluate" element={<Evaluation />} />
+          <Route
+            path="/apply-instructor"
+            className="py-[150px]"
+            element={<ApplyForInstructor />}
+          />
         </Routes>
       </div>
       <Footer />
