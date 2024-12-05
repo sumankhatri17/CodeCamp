@@ -1,5 +1,12 @@
+
 const Signup = async (req, res) => {
 };
 
+const Login = async (req, res) => {
+};
 
-export default Signup;
+const Logout = async (req, res) => {
+};
+
+
+export {Signup, Login, Logout};
