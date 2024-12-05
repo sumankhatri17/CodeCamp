@@ -2,9 +2,27 @@ import React, { useState } from "react";
 
 const SignUpForm = () => {
   const [showImagePlaceholder, setShowImagePlaceholder] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleTeacherButtonClick = () => {
     setShowImagePlaceholder(true);
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log("Selected file:", file);
+    }
+  };
+
+  const handleUpload = () => {
+    if (selectedFile) {
+      alert("File uploaded: " + selectedFile.name);
+      // You can add further logic here to upload the file to a server
+    } else {
+      alert("Please select a file first.");
+    }
   };
 
   return (
@@ -84,9 +102,29 @@ const SignUpForm = () => {
         {showImagePlaceholder && (
           <div className="mt-6 p-4 border border-gray-600 bg-gray-700 rounded-md flex flex-col items-center justify-center relative">
             <p className="text-gray-400 text-sm mb-4">Please upload document for verification</p>
-            <button className="text-white bg-gray-500 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-xs px-3 py-1">
+            <input
+              type="file"
+              id="fileInput"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <button
+              onClick={() => document.getElementById("fileInput").click()}
+              className="text-white bg-gray-500 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-xs px-3 py-1"
+            >
               Choose File
             </button>
+            {selectedFile && (
+              <div className="mt-2 text-sm text-white-700 flex flex-col items-center">
+                <p>Selected File: {selectedFile.name}</p>
+                <button
+                  onClick={handleUpload}
+                  className="text-white bg-gray-500 hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-xs px-3 py-1"
+                >
+                  Upload
+                </button>
+              </div>
+            )}
           </div>
         )}
         <div className="flex items-center justify-center mt-4">
