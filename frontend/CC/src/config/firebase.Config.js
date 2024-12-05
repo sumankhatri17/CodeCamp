@@ -1,5 +1,6 @@
-import firebase from 'firebase/app';
-import 'firebase/auth'; // Import Firebase Authentication module
+// Import Firebase and required modules
+import firebase from "firebase/app";
+import "firebase/auth"; // Import Firebase Authentication module
 
 // Access Firebase configuration from .env
 const firebaseConfig = {
@@ -9,11 +10,13 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,  // Optional
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID, // Optional
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 // Export Firebase Authentication
 export const auth = firebase.auth();

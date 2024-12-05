@@ -7,6 +7,7 @@ import Homepage from "./Pages/Homepage.jsx";
 import Footer from "./components/Footer.jsx";
 import Evaluation from "./Pages/Evaluation.jsx";
 import ApplyForInstructor from "./components/ApplyForInstructor.jsx";
+import Landingpage from "./Pages/Landingpage.jsx";
 const App = () => {
   return (
     <Router>
@@ -22,6 +23,7 @@ const App = () => {
             className="py-[150px]"
             element={<ApplyForInstructor />}
           />
+          <Route path="/landing" element={<Landingpage />} />
         </Routes>
       </div>
       <Footer />
