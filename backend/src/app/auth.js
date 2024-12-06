@@ -1,4 +1,5 @@
 import admin from 'firebase-admin';
+import { get } from 'http';
 
 // Validate email and password
 const validateCredentials = (email, password) => {
@@ -24,12 +25,20 @@ const Signup = async (req, res) => {
     });
   }
 
+
   try {
     // Create user in Firebase Authentication
     const userRecord = await admin.auth().createUser({
       email,
       password,
     });
+
+    if (role === 'teacher') {
+      await userController.createTeacherProfile(userRecord.uid, { email });
+    }else{
+      await userController.createStudentProfile(userRecord.uid, { email });
+    }
+
 
     // Create corresponding user profile in Firestore
     await admin.firestore().collection('users').doc(userRecord.uid).set({
@@ -160,12 +169,38 @@ const userController = {
         console.error('Teacher profile creation error:', error);
         throw error;
       }
+    }, 
+    async getStudentProfile(userId) {
+      try {
+        const snapshot = await admin.firestore()
+          .collection(collections.studentProfiles)
+          .doc(userId)
+          .get();
+  
+        return snapshot.data();
+      } catch (error) {
+        console.error('Error fetching student profile:', error);
+        throw error;
+      }
+    },
+    async getTeacherProfile(userId) {
+      try {
+        const snapshot = await admin.firestore()
+          .collection(collections.teacherProfiles)
+          .doc(userId)
+          .get();
+  
+        return snapshot.data();
+      } catch (error) {
+        console.error('Error fetching teacher profile:', error);
+        throw error;
+      }
     }
   };
   
   // Class Management
   const classController = {
-    async createClass(teacherId, classData) {
+    async createClass(teacherId, classData, location) {
       try {
         const classRef = await admin.firestore()
           .collection(collections.classes)
@@ -174,6 +209,7 @@ const userController = {
             students: [],
             maxStudents: 30,
             currentStudents: 0,
+            location: location,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
             ...classData
           });
@@ -189,6 +225,22 @@ const userController = {
         return classRef.id;
       } catch (error) {
         console.error('Class creation error:', error);
+        throw error;
+      }
+    },
+    async getClasses() {
+      try {
+        const snapshot = await admin.firestore().collection(collections.classes).get();
+        const classes = [];
+        snapshot.forEach(doc => {
+          classes.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        return classes;
+      } catch (error) {
+        console.error('Error fetching classes:', error);
         throw error;
       }
     },
@@ -218,6 +270,84 @@ const userController = {
         });
       } catch (error) {
         console.error('Student enrollment error:', error);
+        throw error;
+      }
+    },
+    async getClassStudents(studentId) {
+      try {
+        const snapshot = await admin.firestore()
+          .collection(collections.classes)
+          .where('studentId', '==', studentId)
+          .get();
+  
+        const classes = [];
+        snapshot.forEach(doc => {
+          classes.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+  
+        return classes;
+      } catch (error) {
+        console.error('Error fetching teacher classes:', error);
+        throw error;
+      }
+    },
+    async getTeacherClasses(teacherId) {
+      try {
+        const snapshot = await admin.firestore()
+          .collection(collections.classes)
+          .where('teacherId', '==', teacherId)
+          .get();
+  
+        const classes = [];
+        snapshot.forEach(doc => {
+          classes.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+  
+        return classes;
+      } catch (error) {
+        console.error('Error fetching teacher classes:', error);
+        throw error;
+      }
+    },
+    async updateAttendance(classId, studentId, date) {
+      try {
+        const attendanceRef = admin.firestore()
+          .collection(collections.attendance)
+          .doc(classId)
+          .collection('students')
+          .doc(studentId)
+          .collection('dates')
+          .doc(date);
+  
+        await attendanceRef.set({
+          present: true,
+          timestamp: admin.firestore.FieldValue.serverTimestamp()
+        });
+      } catch (error) {
+        console.error('Attendance update error:', error);
+        throw error;
+      }
+    },
+    async getAttendance(classId, studentId, date) {
+      try {
+        const attendanceRef = admin.firestore()
+          .collection(collections.attendance)
+          .doc(classId)
+          .collection('students')
+          .doc(studentId)
+          .collection('dates')
+          .doc(date);
+  
+        const snapshot = await attendanceRef.get();
+        return snapshot.exists ? snapshot.data() : null;
+      } catch (error) {
+        console.error('Attendance fetch error:', error);
         throw error;
       }
     }

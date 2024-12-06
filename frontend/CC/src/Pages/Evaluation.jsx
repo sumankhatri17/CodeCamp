@@ -33,8 +33,14 @@ const Evaluation = () => {
       alert("Please answer all questions before submitting.");
       return;
     }
-
     console.log("Submitted Answers:", answers);
+    const response = fetch("/api/evaluate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(Questions, answers),
+    });
     alert("Quiz submitted successfully! Check console for details.");
   };
 
